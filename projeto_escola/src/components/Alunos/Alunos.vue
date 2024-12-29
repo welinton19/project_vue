@@ -1,0 +1,101 @@
+<template>
+  <div >
+    <Titulo text="Aluno"/>
+    <input type="text" placeholder="Nome do Aluno" v-model="nome" @keyup.enter="addAluno()">
+    <button class="btn btnInput" @click="addAluno()">Adicionar</button>
+    <table>
+      <thead>
+        <th>Mat.</th>
+        <th>Nome</th>
+        <th>Opçoês</th>
+      </thead>
+      <tbody v-if="alonos.length">
+        <tr v-for="(aluno , index) in alunos" :key="index">
+          <td>{{ aluno.id }}</td>
+          <td>{{ aluno.nome }}</td>
+          <td>
+            <button class="btn" @click="remover(aluno)">Remover</button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot v-else>
+        Nenhum aluno encontrado
+      </tfoot>
+    </table>
+  </div>
+</template>
+
+<script>
+import Titulo from '../_share/Titulo.vue'
+
+export default {
+  components: {
+    Titulo
+  },
+  data() {
+    return {
+      titulo: 'Aluno',
+      nome:'Alunos',
+      alunos: []
+    }
+  },
+  created(){
+    this.$http.get('http://localhost:3000/alunos')
+    .then(res => res.json())
+    .then(alunos => this.alunos = alunos)
+  },
+  props: {},
+  methods:{
+    addAluno(){
+      let _aluno = {
+      nome: this.nome
+    }
+    this.$http.post('http://localhost:3000/alunos', _aluno)
+     .then(res => res.json())
+     .then(_aluno => {
+        this.alunos.push(_aluno);
+        this.nome = '';
+      });
+     
+  
+
+    this.alunos.push(_aluno);
+    this.nome = '';
+    },
+    remover(aluno){
+
+      this.$http.delet('http://localhost:3000/alunos/${aluno.id}')	
+       .then(() =>{
+         let indice = this.alunos.Indexof(aluno);
+         this.alunos.splice(indice,1);
+       })
+    
+
+      
+    }
+    
+  }
+};
+</script>
+
+
+<style scoped>
+input{
+ 
+  padding: 20px;
+  color: #687f7f;
+  display:inline;
+  border:none;
+}
+.btnInput{
+  
+  border: none;
+  background-color: rgb(116, 115, 115);
+  padding: 20px;
+  display: inline;
+
+}
+
+</style>
+
+
