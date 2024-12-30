@@ -1,18 +1,45 @@
 {
+        "professore":[
+            { 
+                "id": 1, 
+                "nome": "Welinton" 
+            },
+            { 
+                "id": 2,
+                 "nome": "Luciano"
+                 },
+            { 
+                "id": 3, 
+                "nome": "Maria"
+             }
+        ],
     "alunos":[
         {
             "id":1,
-            "nome":"João"
+            "nome":"João",
+            "dataNasc": "15/03/1999",
+            "profesor":{
+                "id":1,
+                "nome":"Welinton"
+            }
 
         },
         {
             "id":2,
-            "nome":"Maria"
+            "nome":"Maria",
+            "profesor":{
+                "id":2,
+                "nome":"Luciano"
+            }
 
         },
         {
             "id":3,
-            "nome":"José"
+            "nome":"José",
+            "profesor":{
+                "id":3,
+                "nome":"Maria"
+            }
 
         }
     ]

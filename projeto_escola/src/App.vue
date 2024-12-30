@@ -1,16 +1,25 @@
 <template>
   <div id="app">
-    <Alunos/>
+    <nav></nav>
+     <router-view :key="$router.fullPath">
+
+     </router-view>
   </div>
 </template>
 
 <script>
-import Alunos from './components/Alunos/Alunos.vue'
+import Alunos from './components/Alunos/Alunos.vue';
+import Professor from './components/Alunos/Professor/Professor.vue';
+import Sobre from './components/Alunos/Sobre/Sobre.vue';
+import Nav from './components/Nav.vue'
 
 export default {
   name: 'App',
   components: {
-    Alunos
+    Alunos,
+    Professor,
+    Sobre,
+    Nav
     
   }
 }
@@ -67,8 +76,6 @@ table thead th{
   padding: 10px 0px;
   text-align: center !important;
 }
-.colPequeno {
-  width: 5%;
-}
+
 
 </style>
