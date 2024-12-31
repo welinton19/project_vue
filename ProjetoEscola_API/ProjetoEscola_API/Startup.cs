@@ -12,6 +12,8 @@ namespace ProjetoEscola_API
         {
             services .AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
+             .AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            services.AddScoped<IRepository, Repoitory>();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

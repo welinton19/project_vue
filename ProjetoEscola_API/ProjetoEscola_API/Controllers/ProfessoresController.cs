@@ -9,34 +9,89 @@ namespace ProjetoEscola_API.Controllers
     [ApiController]
     public class ProfessoresController : controller
     {
-        public ProfessoresController()
+        public IRepository _reppor { get; }
+        public ProfessoresController(IRepository reppor)
         {
+            _reppor = reppor;
             
         }
         [HttpGet]
-        public IActionResult get()
+        public async Task <IActionResult> get()
         {
-            return Ok();
+            try:{
+              var result = await _reppor.GetAllProfessoresAsync(true);
+              return Ok(result);
+              
+            }
+            catch(System.Exception){
+              return this.StatusCode(StatusCode.Status500InternalServerError, "Banco de Dados Falhou");
+            }
         }
         [HttpGet("Professorid}")]
-        public IActionResult get(int Professorid)
+        public async Task <IActionResult> get(int Professorid)
         {
-            return Ok();
+            try:{
+              var result = await _reppor.GetProfessorByIdAsync(Professorid, true);
+              return Ok(result);
+              
+            }
+            catch(System.Exception){
+              return this.StatusCode(StatusCode.Status500InternalServerError, "Banco de Dados Falhou");
+            }
         }
         [HttpPost]
-        public IActionResult post()
+        public async Task <IActionResult> post(Professor model)
         {
-            return Ok();
+            try:{
+
+              _reppor.Add(model)
+
+              if (await _reppor.SaveChangesAsync()){
+                 return Created($"/api/professor/{model.id}", model);
+                
+              }
+              
+            }
+            catch(System.Exception){
+              return this.StatusCode(StatusCode.Status500InternalServerError, "Banco de Dados Falhou");
+            }
+            return BadRequest("Professor não cadastrado");
         }
         [HttpPut("Professorid}")]
-        public IActionResult put(int Professorid)
+        public async Task <IActionResult> put(int Professorid)
         {
-            return Ok();
+            try:{
+              var Professor = await _reppor.GetProfessorByIdAsync(Professorid, false);
+              if (Professor == null)
+                return NotFound();
+              _reppor.Update(Professor);
+              if (await _reppor.SaveChangesAsync()){
+                 return NoContent();
+                
+              }
+            }
+            catch(System.Exception){
+              return this.StatusCode(StatusCode.Status500InternalServerError, "Banco de Dados Falhou");
+            }
+            return BadRequest("Professor não atualizado");
         }
         [HttpDelete("Professorid}")]
-        public IActionResult delet(int Professorid)
+        public async Task <IActionResult> delet(int Professorid)
         {
-            return Ok();
+            try:{
+              var Professor = await _reppor.GetProfessorByIdAsync(Professorid, false);
+              if (Professor == null)
+                return NotFound();
+              _reppor.Delete(Professor);
+              if (await _reppor.SaveChangesAsync()){
+                 return NoContent();
+                
+              }
+            }
+            catch(System.Exception){
+              return this.StatusCode(StatusCode.Status500InternalServerError, "Banco de Dados Falhou");
+            }
+            return BadRequest("Professor não deletado");
         }
        
     }
